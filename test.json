@@ -1,0 +1,15 @@
+{
+  "GlossEntry": [{
+    "ID": "SGML",
+    "SortAs": "SGML",
+    "GlossTerm": "Standard",
+    "Acronym": "SGML",
+    "Abbrev": "ISO 8879:1986",
+    "GlossDef": {
+      "para": "A meta-markup",
+      "GlossSeeAlso": ["GML", "XML"]
+    },
+    "GlossSee": "markup"
+  }]
+}
+
