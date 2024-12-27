@@ -1,0 +1,32 @@
+{
+  "Title": [
+    {
+      "Field1": "Field1Val",
+      "SubTable": [
+        {
+          "SubField_1": "SubField1_Value",
+          "SubField2": "SubField2Value"
+        },
+        {
+          "SubField_1": "SubField1Value",
+          "SubField2": "SubField2Value"
+        }
+      ],
+      "Field2": "Field2Val"
+    },
+    {
+      "Field1": "Field1Val",
+      "SubTable": [
+        {
+          "SubField_1": "SubField1Value",
+          "SubField2": "SubField2Value"
+        },
+        {
+          "SubField_1": "SubField1Value",
+          "SubField2": "SubField2Value"
+        }
+      ],
+      "Field2": "Field2Val"
+    }
+  ]
+}

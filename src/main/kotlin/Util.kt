@@ -3,6 +3,7 @@ import org.jetbrains.kotlinx.dataframe.impl.asList
 import org.jetbrains.kotlinx.dataframe.io.toJson
 import java.math.BigDecimal
 
+@OptIn(ExperimentalUnsignedTypes::class)
 fun Any.asArrayAsListOrNull(): List<*>? =
     when (this) {
         is BooleanArray -> asList()
@@ -38,7 +39,7 @@ fun renderValueToString(value: Any?, precision: Int = 6): String =
         else ->
             value?.asArrayAsListOrNull()
                 ?.let { renderValueToString(it) }
-                ?: value.toString()
+                ?: value?.toString() ?: ""
     }
 
 fun Any.format(precision: Int) = "%.${precision}f".format(this)
