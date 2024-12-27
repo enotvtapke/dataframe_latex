@@ -1,34 +1,57 @@
+import org.jetbrains.kotlinx.dataframe.AnyCol
 import org.jetbrains.kotlinx.dataframe.AnyFrame
 import org.jetbrains.kotlinx.dataframe.AnyRow
 import org.jetbrains.kotlinx.dataframe.api.map
 import org.jetbrains.kotlinx.dataframe.api.take
+import org.jetbrains.kotlinx.dataframe.columns.FrameColumn
 import org.jetbrains.kotlinx.dataframe.io.toJson
-import org.jetbrains.kotlinx.dataframe.size
 import kotlin.collections.map
 
-fun AnyFrame.toLatex(rowsLimit: Int = 10, precision: Int = 1): String =
+fun AnyFrame.toLatex(rowsLimit: Int = 10, precision: Int = 1, borders: Boolean = true): String =
     buildString {
-        appendLine(renderHeader(this@toLatex.size().ncol))
-        appendLine(HORIZONTAL_LINE)
-        appendLine(columns().map { it.name().escape() }.renderRow())
-        appendLine(HORIZONTAL_LINE)
-        appendLine(this@toLatex.take(rowsLimit).map { row ->
-            row.values().map {
-                when (it) {
-                    is AnyRow -> it.toJson().escape()
-                    is AnyFrame -> it.toLatex()
-                    else -> renderValueToString(it, precision).escape()
-                }
-            }.renderRow() + "\n"
-        }.joinToString(separator = "$HORIZONTAL_LINE\n", postfix = HORIZONTAL_LINE))
-        appendLine("\\end{tabular}")
+        appendLine(renderBegin(this@toLatex.columns(), borders))
+        appendLine(renderBody(this@toLatex.take(rowsLimit), borders, precision).prependIndent("\t"))
+        appendLine(renderEnd())
     }.toString()
+
+private fun renderEnd(): String = "\\end{tabular}"
+
+private fun renderBody(
+    frame: AnyFrame,
+    borders: Boolean,
+    precision: Int
+): String = buildString {
+    if (borders) appendLine(HORIZONTAL_LINE)
+    appendLine("${frame.columns().map { it.name().escape() }.renderRow()} $ROWS_SEPARATOR")
+    appendLine(HORIZONTAL_LINE)
+    append(frame.map { row ->
+        row.values().map {
+            when (it) {
+                is AnyRow -> it.toJson().escape()
+                is AnyFrame -> it.toLatex(borders = false)
+                else -> renderValueToString(it, precision).escape()
+            }
+        }.renderRow()
+    }.joinToString(separator = " $ROWS_SEPARATOR\n$HORIZONTAL_LINE\n"))
+    append(" $ROWS_SEPARATOR")
+    if (borders) append("\n" + HORIZONTAL_LINE)
+}
 
 private const val ROWS_SEPARATOR = "\\\\"
 private const val HORIZONTAL_LINE = "\\hline"
 
-private fun renderHeader(columnsNum: Int): String = "\\begin{tabular}{${"|c".repeat(columnsNum) + "|"}}"
+private fun renderBegin(columns: List<AnyCol>, borders: Boolean): String {
+    val cols = columns.map {
+        val isFrame = it is FrameColumn<*>
+        if (isFrame) {
+            "@{}c@{}"
+        } else {
+            "c"
+        }
+    }.joinToString(separator = "|")
+    return "\\begin{tabular}{${if (borders) "|$cols|" else cols}}"
+}
 
-private fun List<String>.renderRow() = joinToString(separator = " & ", postfix = " $ROWS_SEPARATOR")
+private fun List<String>.renderRow() = joinToString(separator = " & ")
 
 private fun String.escape() = this.replace("_", "\\_")
