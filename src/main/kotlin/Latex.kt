@@ -7,7 +7,7 @@ import org.jetbrains.kotlinx.dataframe.columns.FrameColumn
 import org.jetbrains.kotlinx.dataframe.io.toJson
 import kotlin.collections.map
 
-fun AnyFrame.toLatex(rowsLimit: Int = 10, precision: Int = 1, borders: Boolean = true): String =
+fun AnyFrame.toLatex(rowsLimit: Int = 100, precision: Int = 1, borders: Boolean = true): String =
     buildString {
         appendLine(renderBegin(this@toLatex.columns(), borders))
         appendLine(renderBody(this@toLatex, borders, precision, rowsLimit).prependIndent("\t"))
