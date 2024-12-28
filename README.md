@@ -7,6 +7,8 @@ Project adds a new extension function for AnyFrame called `toLatex` that export 
 * `precision` - determine with how many digits after point should float values be rendered 
 * `borders` - `true` when returned table should have outer borders, `false` when not
 
+The main code is written in [Latex.kt](/src/main/kotlin/Latex.kt). In [RenderUtils.kt](src/main/kotlin/RenderUtils.kt) there is
+a number of util functions for rendering that were copied from DataFrame library internals and slightly modified.
 
 Here is some examples:
 <table>
@@ -66,3 +68,4 @@ pclass,survived,name
 </tr>
 </table>
 
+More examples are in [LatexTest.kt](/src/test/kotlin/LatexTest.kt).
