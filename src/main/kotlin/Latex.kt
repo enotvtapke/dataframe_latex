@@ -50,4 +50,4 @@ private fun renderEnd(): String = "\\end{tabular}"
 
 private fun List<String>.renderRow() = joinToString(separator = " & ")
 
-private fun String.escape() = this.replace("_", "\\_")
+private fun String.escape() = this.replace("_", "\\_").replace("{", "\\{").replace("}", "\\}")

@@ -15,6 +15,13 @@ internal class LatexTest {
     }
 
     @Test
+    fun jsonRowTest() {
+        val actual = DataFrame.readJson(getFullName("json_row.json")).toLatex()
+        val expected = Path(getFullName("outputs/json_row.tex")).readText()
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun simpleTest() {
         val actual = DataFrame.readCSV(getFullName("simple.csv")).toLatex()
         val expected = Path(getFullName("outputs/simple.tex")).readText()
