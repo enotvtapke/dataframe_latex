@@ -36,6 +36,13 @@ internal class LatexTest {
     }
 
     @Test
+    fun noBordersTest() {
+        val actual = DataFrame.readCSV(getFullName("simple.csv")).toLatex(borders = false)
+        val expected = Path(getFullName("outputs/no_borders.tex")).readText()
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun nullsTest() {
         val actual = DataFrame.readCSV(getFullName("nulls.csv")).toLatex()
         val expected = Path(getFullName("outputs/nulls.tex")).readText()
